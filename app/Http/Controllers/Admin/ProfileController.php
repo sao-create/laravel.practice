@@ -53,4 +53,22 @@ class ProfileController extends Controller
         
         return redirect('admin/profile');
     }
+    
+    public function index(Request $request)
+    {
+        $cond_title = $request->cond_title;
+        if ($cond_title != '') {
+            $post = Profile::where('name', $cond_title)->get();
+        } else {
+            $post = Profile::all();
+        }
+        return view('admin.profile.index', ['posts' => $post, 'cond_title' => $cond_title]);
+    }
+    
+    public function delete(Request $request)
+    {
+        $profile = Profile::find($request->id);
+        $profile->delete();
+        return redirect('admin/profile/');
+    }
 }
